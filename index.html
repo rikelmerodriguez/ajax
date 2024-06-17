@@ -2,34 +2,72 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Github</title>
-    <link rel="stylesheet" href="main.css">
+    <title>GitHub Profile</title>
+    <style>
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-avatar {
+            width: 150px;
+            border-radius: 50%;
+        }
+        .profile-info {
+            text-align: center;
+        }
+        .numbers {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+        .numbers-item {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <img class="profile-avatar" src="https://via.placeholder.com/180x180" alt=".">
-            <h1 class="profile-name">Gian Souza</h1>
-            <h2 class="profile-username">@ogiansouza</h2>
-            <ul class="numbers">
-                <li class="numbers-item">
-                    <h4>Repositórios</h4>
-                    5
-                </li>
-                <li class="numbers-item">
-                    <h4>Seguidores</h4>
-                    5
-                </li>
-                <li class="numbers-item">
-                    <h4>Seguindo</h4>
-                    5
-                </li>
-            </ul>
-            <a href="#" class="profile-link">Ver no Github</a>
+    <div class="profile">
+        <img class="profile-avatar" src="" alt="Avatar">
+        <div class="profile-info">
+            <h2 class="profile-name"></h2>
+            <p class="profile-username"></p>
         </div>
-    </header>
-    <script src="main.js"></script>
+        <div class="numbers">
+            <div class="numbers-item"></div>
+            <div class="numbers-item"></div>
+            <div class="numbers-item"></div>
+        </div>
+        <a class="profile-link" href="#" target="_blank">Ver Perfil</a>
+    </div>
+
+    <script>
+        async function fetchGitHubData() {
+            const url = 'https://github.com/rikelmerodriguez/ajax';
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json();
+                updateProfile(data);
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        }
+
+        function updateProfile(data) {
+            document.querySelector('.profile-avatar').src = data.avatar_url;
+            document.querySelector('.profile-name').textContent = data.name;
+            document.querySelector('.profile-username').textContent = `@${data.login}`;
+            document.querySelector('.numbers-item:nth-child(1)').innerHTML = `<h4>Repositórios</h4>${data.public_repos}`;
+            document.querySelector('.numbers-item:nth-child(2)').innerHTML = `<h4>Seguidores</h4>${data.followers}`;
+            document.querySelector('.numbers-item:nth-child(3)').innerHTML = `<h4>Seguindo</h4>${data.following}`;
+            document.querySelector('.profile-link').href = data.html_url;
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchGitHubData);
+    </script>
 </body>
 </html>
