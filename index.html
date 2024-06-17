@@ -44,7 +44,7 @@
 
     <script>
         async function fetchGitHubData() {
-            const url = 'https://github.com/rikelmerodriguez/ajax';
+            const url = 'https://api.github.com/users/rikelmerodriguez';
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
